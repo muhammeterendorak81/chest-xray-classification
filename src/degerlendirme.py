@@ -42,3 +42,33 @@ def kaydet(ad, model, gecmis, sonuc, kar):
     kar.to_csv(klasor / f"{ad}_karisiklik.csv")
     (klasor / f"{ad}_metrik.json").write_text(json.dumps(sonuc, indent=2))
     torch.save(model.state_dict(), klasor / f"{ad}.pth")
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+def grafik_ciz(ad):
+    klasor = Path("../sonuclar")
+    gecmis = pd.read_csv(klasor / f"{ad}_gecmis.csv")
+    kar = pd.read_csv(klasor / f"{ad}_karisiklik.csv", index_col=0)
+
+    fig, eksen = plt.subplots(1, 2, figsize=(10, 4))
+    eksen[0].plot(gecmis["epoch"], gecmis["egitim_kaybi"])
+    eksen[0].set_title(f"{ad}: eğitim kaybı")
+    eksen[0].set_xlabel("epoch")
+    eksen[1].plot(gecmis["epoch"], gecmis["dog_f1"], label="doğrulama F1")
+    eksen[1].plot(gecmis["epoch"], gecmis["dog_acc"], label="doğrulama doğruluk")
+    eksen[1].set_title(f"{ad}: doğrulama başarısı")
+    eksen[1].set_xlabel("epoch")
+    eksen[1].legend()
+    plt.tight_layout()
+    plt.savefig(klasor / f"{ad}_egri.png", dpi=150)
+    plt.show()
+
+    plt.figure(figsize=(6, 5))
+    sns.heatmap(kar, annot=True, fmt="d", cmap="Blues")
+    plt.title(f"{ad}: karışıklık matrisi (test)")
+    plt.ylabel("gerçek")
+    plt.xlabel("tahmin")
+    plt.tight_layout()
+    plt.savefig(klasor / f"{ad}_karisiklik.png", dpi=150)
+    plt.show()
