@@ -1,12 +1,34 @@
-﻿
-#Uygulamalı Yapay Zeka dersi dönem projesi. Göğüs röntgeni görüntülerinden normal, pnömoni ve COVID-19 sınıflandırması.
-# Göğüs Röntgeni ile Hastalık Sınıflandırması
+﻿# Göğüs Röntgeni ile Hastalık Sınıflandırması
 
-Bu proje Uygulamalı Yapay Zeka dersi için yaptığım dönem projesi. Göğüs röntgeni görüntülerine bakıp kişinin sağlıklı mı, pnömoni mi yoksa COVID-19 mu olduğunu tahmin eden modeller eğitiyorum.
+Bu proje Uygulamalı Yapay Zeka dersi için yaptığım dönem projesi. Göğüs röntgeni görüntülerine bakıp kişinin sağlıklı mı, pnömoni mi ya da COVID-19 mu olduğunu tahmin eden modeller eğitiyorum.
 
 ## Veri setleri
-- Chest X-Ray Images (Pneumonia): normal ve pnömoni görüntüleri var
-- COVID-19 Radiography Database: normal, COVID-19, viral pnömoni ve lung opacity görüntüleri var
+- Chest X-Ray Images (Pneumonia), Kermany ve ark.: https://data.mendeley.com/datasets/rscbjbr9sj/3 (Kaggle kopyası: https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
+- COVID-19 Radiography Database, Chowdhury ve ark.: https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database
 
-## Planım
-İki veri setini birleştirmeyeceğim, ayrı ayrı çalışacağım. Her veri setinde 3 farklı model deneyip sonuçları hem birbiriyle hem de literatürdeki çalışmalarla karşılaştıracağım. Kodları PyTorch ile yazıyorum.
+İki veri seti birleştirilmedi, ayrı ayrı çalıştım. Veri Seti 1'de iki aşama var: Normal/Pnömoni ve Bakteriyel/Viral. Veri Seti 2'de 4 sınıf var.
+
+## Kurulum
+    python -m venv venv
+    venv\Scripts\Activate.ps1
+    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+    pip install -r requirements.txt
+
+Veri setlerini indirip `data/chest_xray` ve `data/covid19_radiography` klasörlerine açmak gerekiyor (veri GitHub'da yok).
+
+## Çalıştırma sırası
+1. `notebooks/01_eda.ipynb`: veri analizi
+2. `notebooks/02_preprocessing.ipynb`: ön işleme ve veri bölmeleri (`splits/` klasörüne kaydedilir)
+3. `notebooks/03_modelleme.ipynb`: Veri Seti 2 modelleri
+4. `notebooks/04_veri1_modelleme.ipynb`: Veri Seti 1 modelleri
+5. `notebooks/05_karsilastirma.ipynb`: sonuç tabloları ve grafikler
+
+Kodlar `src/` klasöründe, sonuçlar `sonuclar/` klasöründe.
+
+## Sonuçlar (test macro F1)
+| | MLP | Basit CNN | DenseNet121 |
+|---|---|---|---|
+| Veri 2 (4 sınıf) | 0,771 | 0,881 | 0,951 |
+| Veri 1, Aşama 1 (Normal/Pnömoni) | 0,792 | 0,765 | 0,898 |
+| Veri 1, Aşama 2 (Bakteriyel/Viral) | 0,840 | 0,899 | 0,858 |
+
