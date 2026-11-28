@@ -1,0 +1,10 @@
+model,çalışan epoch,en iyi epoch,en iyi doğrulama F1,son eğitim kaybı
+v2_mlp,20,18,0.774,0.585
+v2_cnn,19,14,0.885,0.372
+v2_densenet,17,12,0.959,0.04
+v1_asama1_mlp,15,10,0.933,0.147
+v1_asama1_cnn,17,12,0.957,0.16
+v1_asama1_densenet,8,3,0.973,0.022
+v1_asama2_mlp,15,10,0.73,0.589
+v1_asama2_cnn,12,7,0.73,0.591
+v1_asama2_densenet,13,8,0.764,0.132
